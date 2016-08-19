@@ -1,10 +1,10 @@
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created with Intellij IDEA.
@@ -15,20 +15,17 @@ import java.util.Arrays;
  */
 public class FilmPageParser {
 
+    private String filmsUrls = "http://fs.to/video/films/";
+
     public static void main(String[] args) {
-        ArrayList<String> strings = new ArrayList<String>();
+        FilmPageParser filmPageParser = new FilmPageParser();
 
-        strings.add("http://fs.to/video/films/iw8zfCK3epL1mKa9b6ou08-poltora-shpiona.html");
-        strings.add("http://fs.to/video/films/i4pFzwAydBJE5OUgRXePKcU-jestestvennyj-otbor.html");
-        strings.add("http://fs.to/video/films/iLevrF8PN42exYP5C8btXq-svadebnyj-ugar.html");
-        strings.add("http://fs.to/video/films/i4ELvFcdK3t01zOMt172tJC-sosedi-na-trope-vojny-2.html");
-        strings.add("http://fs.to/video/films/i4FEzYJz7wRW0sv5B4RLOSc-cherepashki-nindzya-2.html");
-        strings.add("http://fs.to/video/films/iLaPSRuwDB1tlKMLB6ARnW-illuziya-obmana-2.html");
-
-
-        for (String string : strings) {
-            System.out.println(Arrays.toString(getNames(string)) + " " + getViews(string));
+        String[] filmsPagesUrls = filmPageParser.getFilmsPagesUrls();
+        System.out.println("size: " + filmsPagesUrls.length);
+        for (String filmsPagesUrl : filmsPagesUrls) {
+            System.out.println(filmsPagesUrl);
         }
+        /*/video/films/iw8zfCK3epL1mKa9b6ou08-poltora-shpiona.html*/
 
     }
 
@@ -55,5 +52,25 @@ public class FilmPageParser {
         }
 
         return result;
+    }
+
+    private String[] getFilmsPagesUrls() {
+        ArrayList<String> strings1 = new ArrayList<>();
+        try {
+            Document doc = Jsoup.connect(filmsUrls).get();
+            Elements table = doc.select("div[class=\"b-section-list \"]").select("table");
+            Elements td = table.select("td");
+                /*table.get(0).select("td").get(0).select("a[class=\"b-poster-tile__link\"]").get(0).select("[class=\"b-poster-tile__link\"]").first().attr("href")*/
+            for (Element element : td) {
+                StringBuilder href = new StringBuilder();
+                href.append(element.select("a[class=\"b-poster-tile__link\"]").get(0).select("[class=\"b-poster-tile__link\"]").first().attr("href"));
+                href.insert(0, "http://fs.to");
+                strings1.add(href.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return strings1.toArray(new String[strings1.size()]);
     }
 }

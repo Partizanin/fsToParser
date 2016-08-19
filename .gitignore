@@ -19,5 +19,4 @@
 out/
 .gitignore
 pom.xml
-src/
 target/
