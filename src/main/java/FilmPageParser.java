@@ -21,13 +21,15 @@ public class FilmPageParser {
 
         FilmPageParser filmPageParser = new FilmPageParser();
 
-        filmPageParser.getFilmsFromPages(10).forEach(System.out::println);
-
+        ArrayList<Film> films = filmPageParser.getFilms(19);
+        System.out.println("size: " + films.size());
+        films.forEach(System.out::println);
     }
 
-    private ArrayList<Film> getFilmsFromPages(int pageCounts) {
-        ArrayList<Film> films = new ArrayList<>();
-        for (String filmUrl : getFilmsUrlsFromPages(pageCounts)) {
+
+    private ArrayList<Film> getFilms(int filmsCount) {
+        ArrayList<Film> films = new ArrayList<Film>();
+        for (String filmUrl : getFilmsUrlsFromPages(filmsCount)) {
             String[] names = getNames(filmUrl);
             films.add(new Film(names[0], names[1], getViews(filmUrl)));
         }
@@ -60,11 +62,19 @@ public class FilmPageParser {
         return result;
     }
 
-    private ArrayList<String> getFilmsUrlsFromPages(int pageCount) {
+    private ArrayList<String> getFilmsUrlsFromPages(int filmCount) {
         ArrayList<String> strings = new ArrayList<>();
+
+        int pageCount = getFilmsPageCount(filmCount);
+
         for (int i = 0; i < pageCount; i++) {
             String url = filmsUrls + "?page=" + (i + 1);
             strings.addAll(getFilmsPagesUrls(url));
+        }
+        int count = (strings.size() - filmCount);
+
+        for (int i = 0; i < count; i++) {
+            strings.remove(0);
         }
 
         return strings;
@@ -89,4 +99,21 @@ public class FilmPageParser {
 
         return strings1;
     }
+
+    private int getFilmsPageCount(int filmsCount) {
+
+        double v = filmsCount / 18d;
+        long part = (long) v;
+        int result = (int) part;
+        double fPart = v - part;
+
+
+        if (fPart > 0) {
+            result++;
+        }
+
+
+        return result;
+    }
+
 }
