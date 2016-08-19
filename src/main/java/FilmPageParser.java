@@ -18,15 +18,13 @@ public class FilmPageParser {
     private String filmsUrls = "http://fs.to/video/films/";
 
     public static void main(String[] args) {
+
         FilmPageParser filmPageParser = new FilmPageParser();
+        ArrayList<String> filmsPagesUrls = filmPageParser.getFilmsUrlsFromPages(1);
 
-        String[] filmsPagesUrls = filmPageParser.getFilmsPagesUrls();
-        System.out.println("size: " + filmsPagesUrls.length);
-        for (String filmsPagesUrl : filmsPagesUrls) {
-            System.out.println(filmsPagesUrl);
-        }
-        /*/video/films/iw8zfCK3epL1mKa9b6ou08-poltora-shpiona.html*/
+        System.out.println("size: " + filmsPagesUrls.size());
 
+        filmsPagesUrls.forEach(System.out::println);
     }
 
     private static String[] getNames(String url) {
@@ -54,13 +52,13 @@ public class FilmPageParser {
         return result;
     }
 
-    private String[] getFilmsPagesUrls() {
-        ArrayList<String> strings1 = new ArrayList<>();
+    private ArrayList<String> getFilmsPagesUrls(String filmsUrls) {
+
+        ArrayList<String> strings1 = new ArrayList<String>();
         try {
             Document doc = Jsoup.connect(filmsUrls).get();
             Elements table = doc.select("div[class=\"b-section-list \"]").select("table");
             Elements td = table.select("td");
-                /*table.get(0).select("td").get(0).select("a[class=\"b-poster-tile__link\"]").get(0).select("[class=\"b-poster-tile__link\"]").first().attr("href")*/
             for (Element element : td) {
                 StringBuilder href = new StringBuilder();
                 href.append(element.select("a[class=\"b-poster-tile__link\"]").get(0).select("[class=\"b-poster-tile__link\"]").first().attr("href"));
@@ -71,6 +69,16 @@ public class FilmPageParser {
             e.printStackTrace();
         }
 
-        return strings1.toArray(new String[strings1.size()]);
+        return strings1;
+    }
+
+    private ArrayList<String> getFilmsUrlsFromPages(int pageCount) {
+        ArrayList<String> strings = new ArrayList<>();
+        for (int i = 0; i < pageCount; i++) {
+            String url = filmsUrls + "?page=" + (i + 1);
+            strings.addAll(getFilmsPagesUrls(url));
+        }
+
+        return strings;
     }
 }
