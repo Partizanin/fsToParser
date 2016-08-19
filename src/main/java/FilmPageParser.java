@@ -20,14 +20,22 @@ public class FilmPageParser {
     public static void main(String[] args) {
 
         FilmPageParser filmPageParser = new FilmPageParser();
-        ArrayList<String> filmsPagesUrls = filmPageParser.getFilmsUrlsFromPages(1);
 
-        System.out.println("size: " + filmsPagesUrls.size());
+        filmPageParser.getFilmsFromPages(10).forEach(System.out::println);
 
-        filmsPagesUrls.forEach(System.out::println);
     }
 
-    private static String[] getNames(String url) {
+    private ArrayList<Film> getFilmsFromPages(int pageCounts) {
+        ArrayList<Film> films = new ArrayList<>();
+        for (String filmUrl : getFilmsUrlsFromPages(pageCounts)) {
+            String[] names = getNames(filmUrl);
+            films.add(new Film(names[0], names[1], getViews(filmUrl)));
+        }
+
+        return films;
+    }
+
+    private String[] getNames(String url) {
         String[] result = new String[2];
         try {
             Document doc = Jsoup.connect(url).get();
@@ -39,7 +47,7 @@ public class FilmPageParser {
         return result;
     }
 
-    private static int getViews(String url) {
+    private int getViews(String url) {
         int result = 0;
         try {/*itemprop="aggregateRating"*/
             Document doc = Jsoup.connect(url).get();
@@ -50,6 +58,16 @@ public class FilmPageParser {
         }
 
         return result;
+    }
+
+    private ArrayList<String> getFilmsUrlsFromPages(int pageCount) {
+        ArrayList<String> strings = new ArrayList<>();
+        for (int i = 0; i < pageCount; i++) {
+            String url = filmsUrls + "?page=" + (i + 1);
+            strings.addAll(getFilmsPagesUrls(url));
+        }
+
+        return strings;
     }
 
     private ArrayList<String> getFilmsPagesUrls(String filmsUrls) {
@@ -70,15 +88,5 @@ public class FilmPageParser {
         }
 
         return strings1;
-    }
-
-    private ArrayList<String> getFilmsUrlsFromPages(int pageCount) {
-        ArrayList<String> strings = new ArrayList<>();
-        for (int i = 0; i < pageCount; i++) {
-            String url = filmsUrls + "?page=" + (i + 1);
-            strings.addAll(getFilmsPagesUrls(url));
-        }
-
-        return strings;
     }
 }
