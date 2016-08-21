@@ -1,3 +1,6 @@
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 
 /**
@@ -16,6 +19,10 @@ public class Film {
     public Film() {
     }
 
+    public Film(JSONObject object) {
+        initializeFromJsonObject(object);
+    }
+
     public Film(String name, String originalName, int views, String[] genres) {
         this.name = name;
         this.originalName = originalName;
@@ -27,6 +34,18 @@ public class Film {
         this.name = name;
         this.originalName = originalName;
         this.views = views;
+    }
+
+    private void initializeFromJsonObject(JSONObject object) {
+        JSONArray jsonArray = (JSONArray) object.get("genres");
+        String[] genres = new String[jsonArray.length()];
+        for (int i = 0; i < jsonArray.length(); i++) {
+            genres[i] = (String) jsonArray.get(i);
+        }
+        this.genres = genres;
+        this.name = (String) object.get("name");
+        this.originalName = (String) object.get("originalName");
+        this.views = (int) object.get("views");
     }
 
     public String getName() {

@@ -1,9 +1,11 @@
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created with Intellij IDEA.
@@ -17,6 +19,7 @@ public class WriteReadJsonObjects {
     public static void main(String[] args) {
         WriteReadJsonObjects writeReadJsonObjects = new WriteReadJsonObjects();
         writeReadJsonObjects.writeObjectToFile(new Film("FilmName", "OriginalName", 1225, new String[2]));
+        System.out.println(writeReadJsonObjects.getFilmsFromFile());
     }
 
     private void writeObjectToFile(Film film) {
@@ -51,6 +54,19 @@ public class WriteReadJsonObjects {
             e.printStackTrace();
         }
         return new JSONObject(sb.toString());
+    }
+
+    public ArrayList<Film> getFilmsFromFile() {
+        ArrayList<Film> films = new ArrayList<>();
+
+        JSONObject jsonObject = readObjectFromFile();
+        JSONArray jsonArray = jsonObject.getJSONArray("films");
+
+        for (Object film : jsonArray) {
+            films.add(new Film((JSONObject) film));
+        }
+
+        return films;
     }
 
 }

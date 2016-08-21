@@ -3,8 +3,8 @@
     {
       "originalName": "OriginalName",
       "genres": [
-        null,
-        null
+        "fantastic",
+        "action"
       ],
       "name": "FilmName",
       "views": 1225
@@ -12,12 +12,21 @@
     {
       "originalName": "OriginalName",
       "genres": [
-        null,
-        null
+        "fantastic",
+        "action"
+      ],
+      "name": "FilmName",
+      "views": 1225
+    },
+    {
+      "originalName": "OriginalName",
+      "genres": [
+        "fantastic",
+        "action"
       ],
       "name": "FilmName",
       "views": 1225
     }
   ],
-  "filmCount": 2
+  "filmCount": 3
 }
