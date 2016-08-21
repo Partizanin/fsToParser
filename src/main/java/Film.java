@@ -29,7 +29,7 @@ public class Film {
         this.views = views;
     }
 
-    private String getName() {
+    public String getName() {
         return name;
     }
 
@@ -37,7 +37,7 @@ public class Film {
         this.name = name;
     }
 
-    private String getOriginalName() {
+    public String getOriginalName() {
         return originalName;
     }
 
@@ -53,7 +53,7 @@ public class Film {
         this.views = views;
     }
 
-    private String[] getGenres() {
+    public String[] getGenres() {
         return genres;
     }
 

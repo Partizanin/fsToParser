@@ -1,0 +1,23 @@
+{
+  "films": [
+    {
+      "originalName": "OriginalName",
+      "genres": [
+        null,
+        null
+      ],
+      "name": "FilmName",
+      "views": 1225
+    },
+    {
+      "originalName": "OriginalName",
+      "genres": [
+        null,
+        null
+      ],
+      "name": "FilmName",
+      "views": 1225
+    }
+  ],
+  "filmCount": 2
+}
