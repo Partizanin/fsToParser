@@ -5,6 +5,8 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Created with Intellij IDEA.
@@ -21,9 +23,11 @@ public class FilmPageParser {
 
         FilmPageParser filmPageParser = new FilmPageParser();
 
-        ArrayList<Film> films = filmPageParser.getFilms(19);
+        ArrayList<Film> films = filmPageParser.getFilms(5);
         System.out.println("size: " + films.size());
-        films.forEach(System.out::println);
+        for (Film film : films) {
+            System.out.println(film.getName() + " " + Arrays.toString(filmPageParser.getGenres(film.getUrl())));
+        }
     }
 
 
@@ -31,7 +35,7 @@ public class FilmPageParser {
         ArrayList<Film> films = new ArrayList<Film>();
         for (String filmUrl : getFilmsUrlsFromPages(filmsCount)) {
             String[] names = getNames(filmUrl);
-            films.add(new Film(names[0], names[1], getViews(filmUrl)));
+            films.add(new Film(names[0], names[1], getViews(filmUrl), filmUrl, getGenres(filmUrl)));
         }
 
         return films;
@@ -60,6 +64,20 @@ public class FilmPageParser {
         }
 
         return result;
+    }
+
+    private String[] getGenres(String url) {
+        ArrayList<String> strings = new ArrayList<>();
+
+        try {
+            Document doc = Jsoup.connect(url).get();
+            Elements select = doc.select("span[itemprop=\"genre\"");
+            strings.addAll(select.stream().map(Element::text).collect(Collectors.toList()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return strings.toArray(new String[0]);
     }
 
     private ArrayList<String> getFilmsUrlsFromPages(int filmCount) {

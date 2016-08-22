@@ -2,6 +2,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Created with Intellij IDEA.
@@ -12,11 +13,22 @@ import java.util.Arrays;
  */
 public class Film {
     private String name;
+    private String url;
     private String originalName;
     private int views;
     private String[] genres;
+    private Date updateDate;
 
     public Film() {
+    }
+
+    public Film(String name, String url, String originalName, int views, String[] genres, Date updateDate) {
+        this.name = name;
+        this.url = url;
+        this.originalName = originalName;
+        this.views = views;
+        this.genres = genres;
+        this.updateDate = updateDate;
     }
 
     public Film(JSONObject object) {
@@ -30,10 +42,27 @@ public class Film {
         this.genres = genres;
     }
 
-    public Film(String name, String originalName, int views) {
+    public Film(String name, String originalName, int views, String url) {
         this.name = name;
         this.originalName = originalName;
         this.views = views;
+        this.url = url;
+    }
+
+    public Film(String name, String originalName, int views, String[] genres, Date updateDate) {
+        this.name = name;
+        this.originalName = originalName;
+        this.views = views;
+        this.genres = genres;
+        this.updateDate = updateDate;
+    }
+
+    public Film(String name, String originalName, int views, String filmUrl, String[] genres) {
+        this.name = name;
+        this.originalName = originalName;
+        this.views = views;
+        this.genres = genres;
+        this.url = filmUrl;
     }
 
     private void initializeFromJsonObject(JSONObject object) {
@@ -110,5 +139,21 @@ public class Film {
                 ", views=" + views +
                 ", genres=" + Arrays.toString(genres) +
                 '}';
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

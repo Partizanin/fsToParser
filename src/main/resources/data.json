@@ -3,30 +3,13 @@
     {
       "originalName": "OriginalName",
       "genres": [
-        "fantastic",
-        "action"
-      ],
-      "name": "FilmName",
-      "views": 1225
-    },
-    {
-      "originalName": "OriginalName",
-      "genres": [
-        "fantastic",
-        "action"
-      ],
-      "name": "FilmName",
-      "views": 1225
-    },
-    {
-      "originalName": "OriginalName",
-      "genres": [
-        "fantastic",
-        "action"
+        null,
+        null
       ],
       "name": "FilmName",
       "views": 1225
     }
   ],
-  "filmCount": 3
+  "updateDate": "22.08.16",
+  "filmCount": 1
 }
