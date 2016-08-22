@@ -13,9 +13,12 @@ import java.util.Arrays;
  */
 public class Film {
     private String name;
+    private String year;
+    private String[] countries;
     private String url;
+    private String imageUrl;
     private String originalName;
-    private int views;
+    private int rates;
     private String[] genres;
     private LocalDate updateDate;
 
@@ -26,20 +29,24 @@ public class Film {
         initializeFromJsonObject(object);
     }
 
-    public Film(String name, String originalName, int views, String[] genres) {
+    public Film(String name, String originalName, int rates, String[] genres) {
         this.name = name;
         this.originalName = originalName;
-        this.views = views;
+        this.rates = rates;
         this.genres = genres;
     }
 
-    public Film(String name, String originalName, int views, String filmUrl, String[] genres, LocalDate updateDate) {
+    public Film(String name, String year, String[] countries, String originalName, int rates, String filmUrl, String imgURl, String[] genres, LocalDate updateDate) {
         this.name = name;
+        this.year = year;
+        this.countries = countries;
         this.originalName = originalName;
-        this.views = views;
+        this.rates = rates;
         this.genres = genres;
         this.updateDate = updateDate;
         this.url = filmUrl;
+        this.imageUrl = imgURl;
+
     }
 
     private void initializeFromJsonObject(JSONObject object) {
@@ -51,7 +58,7 @@ public class Film {
         this.genres = genres;
         this.name = (String) object.get("name");
         this.originalName = (String) object.get("originalName");
-        this.views = (int) object.get("views");
+        this.rates = (int) object.get("rates");
         this.url = (String) object.get("url");
         this.url = (String) object.get("url");
         this.updateDate = LocalDate.parse((CharSequence) object.get("updateDate"));
@@ -73,12 +80,12 @@ public class Film {
         this.originalName = originalName;
     }
 
-    public int getViews() {
-        return views;
+    public int getRates() {
+        return rates;
     }
 
-    public void setViews(int views) {
-        this.views = views;
+    public void setRates(int rates) {
+        this.rates = rates;
     }
 
     public String[] getGenres() {
@@ -117,10 +124,11 @@ public class Film {
     public String toString() {
         return "Film{" +
                 "name='" + name + '\'' +
+                ", year='" + year + '\'' +
+                ", countries=" + Arrays.toString(countries) +
                 ", originalName='" + originalName + '\'' +
-                ", views=" + views +
+                ", rates=" + rates +
                 ", genres=" + Arrays.toString(genres) +
-                ", updateDate=" + updateDate +
                 '}';
     }
 
@@ -138,5 +146,29 @@ public class Film {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String[] getCountries() {
+        return countries;
+    }
+
+    public void setCountries(String[] countries) {
+        this.countries = countries;
     }
 }

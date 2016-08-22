@@ -23,11 +23,9 @@ public class FilmPageParser {
     public static void main(String[] args) {
 
         FilmPageParser filmPageParser = new FilmPageParser();
-
-        ArrayList<Film> films = filmPageParser.getFilms(5);
-        System.out.println("size: " + films.size());
+        ArrayList<Film> films = filmPageParser.getFilms(18);
         for (Film film : films) {
-            System.out.println(film.getName() + " " + Arrays.toString(filmPageParser.getGenres(film.getUrl())));
+            System.out.println(film.getYear() + " " + Arrays.toString(film.getCountries()));
         }
     }
 
@@ -36,10 +34,54 @@ public class FilmPageParser {
         ArrayList<Film> films = new ArrayList<Film>();
         for (String filmUrl : getFilmsUrlsFromPages(filmsCount)) {
             String[] names = getNames(filmUrl);
-            films.add(new Film(names[0], names[1], getViews(filmUrl), filmUrl, getGenres(filmUrl), LocalDate.now()));
+            films.add(new Film(names[0], getYear(filmUrl), getCountries(filmUrl), names[1], getRates(filmUrl), filmUrl, getImgURl(filmUrl), getGenres(filmUrl), LocalDate.now()));
         }
 
         return films;
+    }
+
+    private String[] getCountries(String filmUrl) {
+        String[] result = new String[0];
+        try {
+            Document doc = Jsoup.connect(filmUrl).get();
+
+            Elements selectedElements = doc.select("span[class=\"tag-country-flag\"");
+
+            result = new String[selectedElements.size()];
+
+            for (int i = 0; i < selectedElements.size(); i++) {
+
+                result[i] = selectedElements.get(i).parent().childNode(1).attr("text");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    private String getYear(String filmUrl) {
+        String result = "";
+        try {
+            Document doc = Jsoup.connect(filmUrl).get();
+            result = doc.select("div[id=\"contentInner\"]").select("a[href*=/video/films/year/]").first().childNode(0).childNode(0).attr("text");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    private String getImgURl(String url) {
+        String result = "";
+        try {
+            Document doc = Jsoup.connect(url).get();
+            result = doc.select("a[class=\"images-show\"").get(0).select("img").first().absUrl("src");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     private String[] getNames(String url) {
@@ -54,7 +96,7 @@ public class FilmPageParser {
         return result;
     }
 
-    private int getViews(String url) {
+    private int getRates(String url) {
         int result = 0;
         try {/*itemprop="aggregateRating"*/
             Document doc = Jsoup.connect(url).get();

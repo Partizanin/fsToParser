@@ -52,7 +52,7 @@ public class Servlet extends HttpServlet {
     private JSONObject setNewRateToJsonObject(String requestValue) {
         FilmPageParser filmPageParser = new FilmPageParser();
         JSONObject jsonObject = new JSONObject();
-        ArrayList<Film> films = filmPageParser.getFilms(15);
+        ArrayList<Film> films = filmPageParser.getFilms(18);
         for (int i = 0; i < films.size(); i++) {
             jsonObject.accumulate(String.valueOf(i), new JSONObject(films.get(i)));
         }

@@ -65,13 +65,21 @@ function filmsLoad() {
 
         $.each(jsonData, function (index, value) {
 
-            var imgSrc = "http://img.dotua.org/fsua_items/cover/00/42/03/2/00420358.jpg"/*jsonData.imgSrc*/;
+            var countries = jsonData[index].countries;
+
+            var film_url = jsonData[index].url;
+            var imgSrc = jsonData[index].imageUrl;
             var filmName = jsonData[index].name;
+
             var filmNameOriginal = jsonData[index].originalName;
             var genre = jsonData[index].genres;
-            var vote_value = jsonData[index].views;
+            var vote_value = jsonData[index].rates;
+            console.log(vote_value);
 
-            var div = $('<div class="film" >');
+
+            var a = $('<a href=" ' + film_url + ' ">');
+
+            var div = $('<div class="film">');
 
             div.append(
                 $('<img>', {
@@ -96,13 +104,18 @@ function filmsLoad() {
                 $('<span>', {
                     text: genre
                 }),
-                $('<div>', {
+
+                $('</br>'),
+
+                $('<span>', {
                     id: "vote_value",
-                    text: vote_value
+                    text: "Лайкнули " + vote_value + " человек."
                 })
             );
 
-            $('body').append(div);
+            a.append(div);
+
+            $('body').append(a);
         });
     });
 }
