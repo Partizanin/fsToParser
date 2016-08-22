@@ -1,0 +1,7 @@
+.film {
+    float: left;
+    border: 1px double black; /* Параметры границы */
+    background: #b7dcff; /* Цвет фона */
+    padding: 10px; /* Поля вокруг текста */
+    margin: 3px;
+}

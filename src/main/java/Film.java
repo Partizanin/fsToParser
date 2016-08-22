@@ -1,8 +1,8 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Created with Intellij IDEA.
@@ -17,18 +17,9 @@ public class Film {
     private String originalName;
     private int views;
     private String[] genres;
-    private Date updateDate;
+    private LocalDate updateDate;
 
     public Film() {
-    }
-
-    public Film(String name, String url, String originalName, int views, String[] genres, Date updateDate) {
-        this.name = name;
-        this.url = url;
-        this.originalName = originalName;
-        this.views = views;
-        this.genres = genres;
-        this.updateDate = updateDate;
     }
 
     public Film(JSONObject object) {
@@ -42,26 +33,12 @@ public class Film {
         this.genres = genres;
     }
 
-    public Film(String name, String originalName, int views, String url) {
-        this.name = name;
-        this.originalName = originalName;
-        this.views = views;
-        this.url = url;
-    }
-
-    public Film(String name, String originalName, int views, String[] genres, Date updateDate) {
+    public Film(String name, String originalName, int views, String filmUrl, String[] genres, LocalDate updateDate) {
         this.name = name;
         this.originalName = originalName;
         this.views = views;
         this.genres = genres;
         this.updateDate = updateDate;
-    }
-
-    public Film(String name, String originalName, int views, String filmUrl, String[] genres) {
-        this.name = name;
-        this.originalName = originalName;
-        this.views = views;
-        this.genres = genres;
         this.url = filmUrl;
     }
 
@@ -75,6 +52,9 @@ public class Film {
         this.name = (String) object.get("name");
         this.originalName = (String) object.get("originalName");
         this.views = (int) object.get("views");
+        this.url = (String) object.get("url");
+        this.url = (String) object.get("url");
+        this.updateDate = LocalDate.parse((CharSequence) object.get("updateDate"));
     }
 
     public String getName() {
@@ -117,6 +97,7 @@ public class Film {
         Film film = (Film) o;
 
         if (!getName().equals(film.getName())) return false;
+        if (!getUrl().equals(film.getUrl())) return false;
         if (!getOriginalName().equals(film.getOriginalName())) return false;
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
         return Arrays.equals(getGenres(), film.getGenres());
@@ -126,6 +107,7 @@ public class Film {
     @Override
     public int hashCode() {
         int result = getName().hashCode();
+        result = 31 * result + getUrl().hashCode();
         result = 31 * result + getOriginalName().hashCode();
         result = 31 * result + Arrays.hashCode(getGenres());
         return result;
@@ -138,14 +120,15 @@ public class Film {
                 ", originalName='" + originalName + '\'' +
                 ", views=" + views +
                 ", genres=" + Arrays.toString(genres) +
+                ", updateDate=" + updateDate +
                 '}';
     }
 
-    public Date getUpdateDate() {
+    public LocalDate getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDate updateDate) {
         this.updateDate = updateDate;
     }
 

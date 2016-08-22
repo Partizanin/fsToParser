@@ -4,6 +4,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -31,11 +32,11 @@ public class FilmPageParser {
     }
 
 
-    private ArrayList<Film> getFilms(int filmsCount) {
+    public ArrayList<Film> getFilms(int filmsCount) {
         ArrayList<Film> films = new ArrayList<Film>();
         for (String filmUrl : getFilmsUrlsFromPages(filmsCount)) {
             String[] names = getNames(filmUrl);
-            films.add(new Film(names[0], names[1], getViews(filmUrl), filmUrl, getGenres(filmUrl)));
+            films.add(new Film(names[0], names[1], getViews(filmUrl), filmUrl, getGenres(filmUrl), LocalDate.now()));
         }
 
         return films;
